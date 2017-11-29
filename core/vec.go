@@ -32,9 +32,9 @@ func (v *Vec) Length() float64 {
 
 //Normalizes an Vector and returns it
 func (v *Vec) Normalize() Vec {
-
-	if v.Length() > 0 {
-		invLen := 1/v.Length()
+	len := v.Length()
+	if len > 0 {
+		invLen := 1/len
 		v.X *= invLen
 		v.Y *= invLen
 		v.Z *= invLen

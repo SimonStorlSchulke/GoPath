@@ -10,28 +10,24 @@ type Sphere struct {
 
 //Returns Normal Vector of Sphere at Hitpoint
 func (S *Sphere) GetNormal(ray Ray, t float64) Vec {
-	Phit := ray.O.Add(ray.D)
-	Phit.Multiply(t)
-	NHit := Phit.Sub(S.CT).Normalized()
-	return NHit
-
-	//TODO: seems broken...
+	HitPoint := ray.O.Add(ray.D.Multiply(t))
+	Nhit := HitPoint.Sub(S.CT).Normalized()
+	return Nhit
 }
 
 //returns true if Ray intersects Sphere and sets t to depth of Hitpoint
 func (S *Sphere) Intersect(ray Ray, t *float64) bool {
-	oc := ray.O.Sub(S.CT)
-	b := 2 * Dot(oc, ray.D)
-	c := Dot(oc, oc) - S.R * S.R
-	discriminant := b * b - 4 * c
-
-	if discriminant < 0 {
+	L := S.CT.Sub(ray.O)
+	tca := Dot(L, ray.D)
+	d2 :=  Dot(L, L) - tca * tca
+	if d2 > (S.R*S.R) {
 		return false
 	}
-	sqrt_discriminant := math.Sqrt(discriminant)
-	t0 := -b - sqrt_discriminant
-	t1 := -b + sqrt_discriminant
 
+	thc := math.Sqrt((S.R*S.R) - d2)
+
+	t0 := tca - thc;
+	t1 := tca + thc;
 	*t = math.Min(t0, t1)
 
 	return true

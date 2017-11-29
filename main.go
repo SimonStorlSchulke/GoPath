@@ -14,13 +14,13 @@ func main() {
 
 	//Simple Sphere test-scene
 	cam_or := Vec{-5, 0, 0}
-	sp1 := Sphere{Vec{0,0,0}, 1.3}
-	sp2 := Sphere{Vec{0,2,0}, 1.3}
-	sp3 := Sphere{Vec{112,0,10}, 43}
-	sp4 := Sphere{Vec{-2,-2,1}, 0.5}
+	//cam_dir := Vec{-1,0,0}.Normalized()
+	sp1 := Sphere{Vec{0,0,0}, 1}
+	sp2 := Sphere{Vec{0,2,0}, 1.4}
+	sp3 := Sphere{Vec{0,-1.5,0}, 0.8}
 	var t float64
 
-	sphereArray := [4]Sphere{sp1, sp2, sp3, sp4}
+	sphereArray := [3]Sphere{sp1, sp2, sp3}
 
 	img := image.NewRGBA(image.Rect(0, 0, WIDTH, HEIGHT))
 	//Loop through whole Image
@@ -28,16 +28,15 @@ func main() {
 		for y := 0; y < HEIGHT; y++ {
 
 			//Map X and Y from -0.5 to 0.5 and respect Aspect Ratio
-			X := float64(x)/float64(WIDTH) - 0.5
-			Y := float64(y)/float64(HEIGHT) - 0.5
+			X := 1-float64(x)/float64(WIDTH) - 0.5
+			Y := 1-float64(y)/float64(HEIGHT) - 0.5
 			X *= ASPECT_RATIO
 
 			//Background Color
-			col := color.Gray32(float32(Y)).Clamped()
+			col := color.Gray32(float32(-Y+0.5)*0.5).Clamped()
 
-			//Shoot Ray through each Pixel
+			//Shoot Ray through each Pixel TODO: Make use of Camera Direction
 			ray := Ray{cam_or, Vec{1,X,Y}.Normalized()}
-
 
 			//TODO: implement in separate function integrator and make Interface for other Objects besides Spheres
 			intersect := false
@@ -60,17 +59,15 @@ func main() {
 						//what Object got hit
 						ObjectHitIndex = i
 					}
-
 				}
-
 			}
 
 			if intersect == true {
 				col = color.Gray32(float32(ObjectHitIndex) / 5)
-				//dirty color variation
-				col = color.Color32{float32(ObjectHitIndex) / 5, (1-float32(ObjectHitIndex) / 2), float32(ObjectHitIndex) / 2}
+				//Show Surface Normal
+				col = color.FromVec(sphereArray[ObjectHitIndex].GetNormal(ray, tMin))
+				col.Clamp()
 			}
-
 
 			//convert float32 colors to 24 bit (0-255) color and save
 			img.Set(x,y, col.Get24Bit())
