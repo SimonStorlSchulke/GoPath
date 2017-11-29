@@ -20,6 +20,7 @@ func (S *Sphere) Intersect(ray Ray, t *float64) bool {
 	L := S.CT.Sub(ray.O)
 	tca := Dot(L, ray.D)
 	d2 :=  Dot(L, L) - tca * tca
+	
 	if d2 > (S.R*S.R) {
 		return false
 	}

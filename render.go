@@ -8,10 +8,9 @@ import (
 	. "./core")
 
 
-func render(ObjectArray []geometry.Sphere, cam_or Vec) {
+func render(ObjectArray []geometry.Sphere, cam_or Vec, WIDTH, HEIGHT int) {
 
-	const WIDTH, HEIGHT int = 1280, 720
-	const ASPECT_RATIO float64 = float64(WIDTH) / float64(HEIGHT)
+	ASPECT_RATIO := float64(WIDTH) / float64(HEIGHT)
 
 	var t float64
 	img := image.NewRGBA(image.Rect(0, 0, WIDTH, HEIGHT))
