@@ -75,7 +75,7 @@ func main() {
 	}
 	
 	
-	util.SavePNG("test2", img)
+	util.SavePNG("testimage", img)
 
 
 }
