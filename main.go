@@ -2,7 +2,6 @@ package main
 
 import (. "./core"
 		. "./geometry"
-		"fmt"
 		"image"
 		"./util"
 		"./color")
@@ -15,9 +14,13 @@ func main() {
 
 	//Simple Sphere test-scene
 	cam_or := Vec{-5, 0, 0}
-	cam_dir := Vec{1, 0, 0}
-	sp := Sphere{Vec{0,0,0}, 1.3}
-	t := 0.5
+	sp1 := Sphere{Vec{0,0,0}, 1.3}
+	sp2 := Sphere{Vec{0,2,0}, 1.3}
+	sp3 := Sphere{Vec{112,0,10}, 43}
+	sp4 := Sphere{Vec{-2,-2,1}, 0.5}
+	var t float64
+
+	sphereArray := [4]Sphere{sp1, sp2, sp3, sp4}
 
 	img := image.NewRGBA(image.Rect(0, 0, WIDTH, HEIGHT))
 	//Loop through whole Image
@@ -29,16 +32,45 @@ func main() {
 			Y := float64(y)/float64(HEIGHT) - 0.5
 			X *= ASPECT_RATIO
 
-			//Shoot Ray through each Pixel
-			ray := Ray{cam_or, Vec{1,X,Y}.Normalized()}
-
 			//Background Color
 			col := color.Gray32(float32(Y)).Clamped()
 
-			//colorize Sphere
-			if sp.Intersect(ray, &t) == true {
-				col = color.Color32{0.4,0,0.6}
+			//Shoot Ray through each Pixel
+			ray := Ray{cam_or, Vec{1,X,Y}.Normalized()}
+
+
+			//TODO: implement in separate function integrator and make Interface for other Objects besides Spheres
+			intersect := false
+
+			//tmin = depth of Hitpoint nearest to camera
+			var tMin float64 = 10000
+			var ObjectHitIndex int
+			//Loop thorough Objects
+			for i, currentSphere := range sphereArray {
+
+				//Check for intersection in every Object
+				if currentSphere.Intersect(ray, &t) == true {
+					intersect = true
+
+					//check if new t is smaller then old tmin and set tmin to new t if it is
+					tminOld := tMin
+
+					if t < tminOld {
+						tMin = t
+						//what Object got hit
+						ObjectHitIndex = i
+					}
+
+				}
+
 			}
+
+			if intersect == true {
+				col = color.Gray32(float32(ObjectHitIndex) / 5)
+				//dirty color variation
+				col = color.Color32{float32(ObjectHitIndex) / 5, (1-float32(ObjectHitIndex) / 2), float32(ObjectHitIndex) / 2}
+			}
+
 
 			//convert float32 colors to 24 bit (0-255) color and save
 			img.Set(x,y, col.Get24Bit())
@@ -46,10 +78,7 @@ func main() {
 	}
 	
 	
-	util.SavePNG("test", img)
+	util.SavePNG("test2", img)
 
-	ray := Ray{cam_or, cam_dir}
-
-	fmt.Println(sp.Intersect(ray, &t))
 
 }
