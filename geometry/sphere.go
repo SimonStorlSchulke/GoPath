@@ -9,10 +9,13 @@ type Sphere struct {
 }
 
 //Returns Normal Vector of Sphere at Hitpoint
-func (S *Sphere) getNormal(ray Ray) Vec {
-	v := ray.O.Sub(S.CT)
-	v.Normalize()
-	return v
+func (S *Sphere) GetNormal(ray Ray, t float64) Vec {
+	Phit := ray.O.Add(ray.D)
+	Phit.Multiply(t)
+	NHit := Phit.Sub(S.CT).Normalized()
+	return NHit
+
+	//TODO: seems broken...
 }
 
 //returns true if Ray intersects Sphere and sets t to depth of Hitpoint
