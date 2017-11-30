@@ -16,5 +16,7 @@ func main() {
 	sp3 := geometry.Sphere{Vec{0,-2,0}, 0.8}
 	sphereArray := []geometry.Sphere{sp1, sp2, sp3}
 
+	tri1 := geometry.Tri{}
+
 	render(sphereArray, cam_or, WIDTH, HEIGHT)
 }

@@ -9,7 +9,7 @@ type Sphere struct {
 }
 
 //Returns Normal Vector of Sphere at Hitpoint
-func (S *Sphere) GetNormal(ray Ray, HitPoint Vec) Vec {
+func (S *Sphere) Normal(ray Ray, HitPoint Vec) Vec {
 	Nhit := HitPoint.Sub(S.CT).Normalized()
 	return Nhit
 }
