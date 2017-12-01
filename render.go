@@ -39,7 +39,7 @@ func render(ObjectArray []geometry.Geometry, cam_or Vec, WIDTH, HEIGHT int, file
 			var ObjectHitIndex int
 			//Loop thorough Objects
 			for i, currentSphere := range ObjectArray {
-
+				
 				//Check for intersection in every Object
 				if currentSphere.Intersect(ray, &t) == true {
 					intersect = true

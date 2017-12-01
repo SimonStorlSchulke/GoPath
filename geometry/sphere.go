@@ -9,13 +9,13 @@ type Sphere struct {
 }
 
 //Returns Normal Vector of Sphere at Hitpoint
-func (S *Sphere) Normal(ray Ray, HitPoint Vec) Vec {
+func (S Sphere) Normal(ray Ray, HitPoint Vec) Vec {
 	Nhit := HitPoint.Sub(S.CT).Normalized()
 	return Nhit
 }
 
 //returns true if Ray intersects Sphere and sets t to depth of Hitpoint
-func (S *Sphere) Intersect(ray Ray, t *float64) bool {
+func (S Sphere) Intersect(ray Ray, t *float64) bool {
 	L := S.CT.Sub(ray.O)
 	tca := Dot(L, ray.D)
 	d2 :=  Dot(L, L) - tca * tca
