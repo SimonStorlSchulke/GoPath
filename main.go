@@ -14,9 +14,10 @@ func main() {
 	sp1 := geometry.Sphere{Vec{0,-0.5,0}, 1}
 	sp2 := geometry.Sphere{Vec{0,1.5,0}, 1.4}
 	sp3 := geometry.Sphere{Vec{0,-2,0}, 0.8}
-	sphereArray := []geometry.Sphere{sp1, sp2, sp3}
+	//sphereArray := []geometry.Sphere{sp1, sp2, sp3}
 
-	tri1 := geometry.Tri{}
+	ObArray := []geometry.Geometry{&sp1, &sp2, &sp3}
 
-	render(sphereArray, cam_or, WIDTH, HEIGHT)
+
+	render(ObArray, cam_or, WIDTH, HEIGHT, "testimage")
 }

@@ -8,7 +8,7 @@ import (
 	. "./core"
 )
 
-func render(ObjectArray []geometry.Sphere, cam_or Vec, WIDTH, HEIGHT int) {
+func render(ObjectArray []geometry.Geometry, cam_or Vec, WIDTH, HEIGHT int, filename string) {
 
 	ASPECT_RATIO := float64(WIDTH) / float64(HEIGHT)
 
@@ -80,5 +80,5 @@ func render(ObjectArray []geometry.Sphere, cam_or Vec, WIDTH, HEIGHT int) {
 			img.Set(x, y, col.Get24Bit())
 		}
 	}
-	util.SavePNG("testimage", img)
+	util.SavePNG(filename, img)
 }
