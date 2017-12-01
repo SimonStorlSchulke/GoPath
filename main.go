@@ -10,14 +10,13 @@ func main() {
 
 	//Simple Sphere test-scene
 	cam_or := Vec{-5, 0, 0}
-	//cam_dir := Vec{-1,0,0}.Normalized()
+	//cam_dir := Vec{-1,0,0}.Normalized() // - TODO
 	sp1 := geometry.Sphere{Vec{0,-0.5,0}, 1}
 	sp2 := geometry.Sphere{Vec{0,1.5,0}, 1.4}
 	sp3 := geometry.Sphere{Vec{0,-2,0}, 0.8}
-	//sphereArray := []geometry.Sphere{sp1, sp2, sp3}
 
 	ObArray := []geometry.Geometry{&sp1, &sp2, &sp3}
 
+	Render(ObArray, cam_or, WIDTH, HEIGHT, "image")
 
-	render(ObArray, cam_or, WIDTH, HEIGHT, "testimage")
 }
