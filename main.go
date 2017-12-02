@@ -33,6 +33,6 @@ func main() {
 
 	ObArray := []geometry.Geometry{&sp1, &sp2, &sp3, &tri1, &tri2, &tri3, &tri4}
 
-	Render(ObArray, cam_or, WIDTH, HEIGHT, "image2")
+	Render(ObArray, cam_or, WIDTH, HEIGHT, "image")
 
 }

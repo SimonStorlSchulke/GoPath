@@ -53,5 +53,4 @@ func (tri Tri) Intersect(ray Ray, t *float64) bool {
 	}
 
 	return true
-
 }
