@@ -46,6 +46,7 @@ func Render(objectArray []geometry.Geometry, cam_or Vec, WIDTH, HEIGHT int, file
 					//check if new t is smaller then old tmin and set tmin to new t if it is
 					tminOld := tMin
 
+
 					if t < tminOld {
 						tMin = t
 						//what Object got hit
@@ -61,15 +62,11 @@ func Render(objectArray []geometry.Geometry, cam_or Vec, WIDTH, HEIGHT int, file
 				LightPos := Vec{-4, -1, 3}
 				LightAttendance := Dot(HitPoint.Normalized(), LightPos.Normalized())
 
-				//placeholder colors
-				colorArray := []color.Color32{
-					color.Color32{1,0.3,0.3},
-					color.Color32{0.3,1,0.3},
-					color.Color32{0.3,0.3,1},
-					}
-
+				//Placeholder Color
 				//Color Spheres (color multiplied with Light Attendance)
-				col = color.Multiply(colorArray[ObjectHitIndex],color.Gray32(float32(LightAttendance)))
+				col = color.Gray32(float32(ObjectHitIndex) / 5)
+				col = color.Gray32(float32(LightAttendance))
+				//col = color.FromVec(objectArray[ObjectHitIndex].Normal(ray, HitPoint))
 				col.Clamp()
 			}
 			//convert float32 colors to 24 bit (0-255) color and save
