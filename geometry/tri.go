@@ -15,7 +15,7 @@ func (tri Tri) Normal(ray Ray, HitPoint Vec) Vec {
 	ab := tri.B.Sub(tri.A)
 	ac := tri.C.Sub(tri.A)
 	//calculate Normal
-	return Cross(ab, ac)
+	return Cross(ac, ab)
 }
 
 func (tri Tri) Intersect(ray Ray, t *float64) bool {
