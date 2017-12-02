@@ -62,11 +62,11 @@ func Render(objectArray []geometry.Geometry, cam_or Vec, WIDTH, HEIGHT int, file
 				LightPos := Vec{-4, -1, 3}
 				LightAttendance := Dot(HitPoint.Normalized(), LightPos.Normalized())
 
-				//Placeholder Color
+				//Placeholder Color TODO!
 				//Color Spheres (color multiplied with Light Attendance)
-				col = color.Gray32(float32(ObjectHitIndex) / 5)
+				//col = color.Gray32(float32(ObjectHitIndex) / 5)
 				col = color.Gray32(float32(LightAttendance))
-				//col = color.FromVec(objectArray[ObjectHitIndex].Normal(ray, HitPoint))
+				col = color.FromVec(objectArray[ObjectHitIndex].Normal(ray, HitPoint))
 				col.Clamp()
 			}
 			//convert float32 colors to 24 bit (0-255) color and save
