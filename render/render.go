@@ -1,16 +1,17 @@
-package main
+package render
 
 import (
-	"./geometry"
 	"image"
-	"./util"
-	"./color"
-	. "./core"
+
+	"../color"
+	. "../core"
+	"../geometry"
+	"../util"
 )
 
 func Render(objectArray []geometry.Geometry, cam_or Vec, WIDTH, HEIGHT int, filename string) {
-	
-	img := image.NewRGBA(image.Rect(0, 0, WIDTH, HEIGHT))	
+
+	img := image.NewRGBA(image.Rect(0, 0, WIDTH, HEIGHT))
 	ASPECT_RATIO := float64(WIDTH) / float64(HEIGHT)
 	var ray Ray
 	var intersect bool
@@ -26,7 +27,7 @@ func Render(objectArray []geometry.Geometry, cam_or Vec, WIDTH, HEIGHT int, file
 			X *= ASPECT_RATIO
 
 			//Background Color
-			col := color.Gray32(float32(0.5 - Y) * 0.5).Clamped()
+			col := color.Gray32(float32(0.5-Y) * 0.5).Clamped()
 
 			//Shoot Ray through each Pixel TODO: Make use of Camera Direction
 			ray = Ray{cam_or, Vec{1, X, Y}.Normalized()}
@@ -39,13 +40,12 @@ func Render(objectArray []geometry.Geometry, cam_or Vec, WIDTH, HEIGHT int, file
 
 			//Loop thorough Objects
 			for i, currentObject := range objectArray {
-				
+
 				//Check for intersection in every Object
 				if currentObject.Intersect(ray, &t) {
 					intersect = true
 					//check if new t is smaller then old tmin and set tmin to new t if it is
 					tminOld := tMin
-
 
 					if t < tminOld {
 						tMin = t
