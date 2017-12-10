@@ -1,12 +1,20 @@
 package main
 
 import (
+	"fmt"
+	"runtime"
+	"strconv"
+	"time"
+
 	. "./core"
 	"./geometry"
 	. "./render"
 )
 
 func main() {
+	//multythreaded:
+	Threads := runtime.NumCPU()
+	runtime.GOMAXPROCS(Threads)
 
 	const WIDTH, HEIGHT int = 1200, 800
 	const ASPECT_RATIO float64 = float64(WIDTH) / float64(HEIGHT)
@@ -29,10 +37,17 @@ func main() {
 	tri3 := geometry.Tri{v2, v3, v4}
 	tri4 := geometry.Tri{v1, v3, v4}
 
-	//tri2 := geometry.Tri{Vec{0,0,1}, Vec{0,1,0}, Vec{0,0,1}}
-	//tri3 := geometry.Tri{Vec{0,0,1}, Vec{0,1,0}, Vec{0,0,1}}
-
 	ObArray := []geometry.Geometry{&sp1, &sp2, &sp3, &tri1, &tri2, &tri3, &tri4}
 
-	Render(ObArray, cam_or, WIDTH, HEIGHT, "image")
+	//Benchmark
+	numberOfRenders := 20
+	start := time.Now()
+	for i := 0; i < numberOfRenders; i++ {
+		name := "image" + strconv.Itoa(i)
+		Render(ObArray, cam_or, WIDTH, HEIGHT, name)
+	}
+	end := time.Now()
+	rendertime := end.Sub(start)
+	rendertime /= time.Duration(numberOfRenders)
+	fmt.Println("average rendertime on", Threads, "Threads:", rendertime)
 }
