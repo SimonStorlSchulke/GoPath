@@ -35,10 +35,10 @@ func Render(objectArray []geometry.Geometry, cam_or Vec, WIDTH, HEIGHT int, file
 
 			//tmin = depth of Hitpoint nearest to camera
 			var tMin float64 = 10000
-			var ObjectHitIndex int
+			//var ObjectHitIndex int
 
 			//Loop thorough Objects
-			for i, currentObject := range objectArray {
+			for _, currentObject := range objectArray {
 				
 				//Check for intersection in every Object
 				if currentObject.Intersect(ray, &t) {
@@ -50,7 +50,7 @@ func Render(objectArray []geometry.Geometry, cam_or Vec, WIDTH, HEIGHT int, file
 					if t < tminOld {
 						tMin = t
 						//what Object got hit
-						ObjectHitIndex = i
+						//ObjectHitIndex = i
 					}
 				}
 			}
@@ -59,14 +59,14 @@ func Render(objectArray []geometry.Geometry, cam_or Vec, WIDTH, HEIGHT int, file
 				HitPoint := ray.O.Add(ray.D.Multiply(tMin))
 
 				//Light Attendance
-				LightPos := Vec{-4, -1, 3}
+				LightPos := Vec{-6, 0, 1}
 				LightAttendance := Dot(HitPoint.Normalized(), LightPos.Normalized())
 
 				//Placeholder Color TODO!
 				//Color Spheres (color multiplied with Light Attendance)
 				//col = color.Gray32(float32(ObjectHitIndex) / 5)
 				col = color.Gray32(float32(LightAttendance))
-				col = color.FromVec(objectArray[ObjectHitIndex].Normal(ray, HitPoint))
+				//col = color.FromVec(objectArray[ObjectHitIndex].Normal(ray, HitPoint))
 				col.Clamp()
 			}
 			//convert float32 colors to 24 bit (0-255) color and save
