@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"runtime"
-	"strconv"
-	"time"
+	//"strconv"
+	//"time"
 
 	. "./core"
 	"./geometry"
@@ -39,6 +39,7 @@ func main() {
 
 	ObArray := []geometry.Geometry{&sp1, &sp2, &sp3, &tri1, &tri2, &tri3, &tri4}
 
+	/*
 	//Benchmark
 	numberOfRenders := 20
 	start := time.Now()
@@ -50,4 +51,7 @@ func main() {
 	rendertime := end.Sub(start)
 	rendertime /= time.Duration(numberOfRenders)
 	fmt.Println("average rendertime on", Threads, "Threads:", rendertime)
+	*/
+	Render(ObArray, cam_or, WIDTH, HEIGHT, "testimage")
+	fmt.Println("Rendering done")
 }
