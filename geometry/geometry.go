@@ -6,4 +6,5 @@ import . "../core"
 type Geometry interface {
 	Intersect(ray Ray, t *float64) bool
 	Normal(ray Ray, HitPoint Vec) Vec
+	
 }
