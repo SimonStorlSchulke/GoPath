@@ -1,14 +1,14 @@
 package geometry
 
 import (
-	. "../core"
+	"GoPath/color"
+	. "GoPath/core"
 	//"math"
 )
 
 type Tri struct {
 	A, B, C Vec
 }
-
 
 func (tri Tri) Normal(ray Ray, HitPoint Vec) Vec {
 
@@ -18,10 +18,14 @@ func (tri Tri) Normal(ray Ray, HitPoint Vec) Vec {
 	return Cross(ac, ab)
 }
 
+func (tri Tri) ObjectColor() color.Color32 {
+	return color.Color32{1, 0, 0}
+}
+
 func (tri Tri) Intersect(ray Ray, t *float64) bool {
 
 	EPSILON := 0.0000000001
-	var a,f,u,v float64
+	var a, f, u, v float64
 
 	edge1 := tri.B.Sub(tri.A)
 	edge2 := tri.C.Sub(tri.A)
@@ -32,7 +36,7 @@ func (tri Tri) Intersect(ray Ray, t *float64) bool {
 		return false
 	}
 
-	f = 1/a
+	f = 1 / a
 	s := ray.O.Sub(tri.A)
 	u = f * Dot(s, h)
 	if u < 0.0 || u > 1.0 {
@@ -41,7 +45,7 @@ func (tri Tri) Intersect(ray Ray, t *float64) bool {
 
 	q := Cross(s, edge1)
 	v = f * Dot(ray.D, q)
-	if v < 0.0 || u + v > 1 {
+	if v < 0.0 || u+v > 1 {
 		return false
 	}
 
