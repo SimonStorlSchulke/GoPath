@@ -1,16 +1,13 @@
 package main
 
 import (
-	"fmt"
-
-	//"strconv"
-	//"time"
-
 	"GoPath/color"
 	. "GoPath/core"
-
 	"GoPath/geometry"
+	"GoPath/material"
 	. "GoPath/render"
+	"fmt" //"strconv"
+	//"time"
 )
 
 func main() {
@@ -25,8 +22,12 @@ func main() {
 	sp2 := geometry.NewSphere(Vec{0, 1.5, -0.9}, 1)
 	sp3 := geometry.NewSphere(Vec{0, -2, -0.9}, 0.5)
 
-	sp1.SetObjectColor(color.Color32{1, 1, 0})
-	sp2.SetObjectColor(color.Color32{0, 0.8, 1})
+	sp2.SetMaterial(material.StandardMaterial{
+		Color:     color.GREEN,
+		Specular:  0.5,
+		Roughness: 0,
+		Rim:       0,
+	})
 
 	//CuPyramid
 	v1 := Vec{-0.5, 0, -0.3}
@@ -34,12 +35,12 @@ func main() {
 	v3 := Vec{0.5, 0.75, -0.3}
 	v4 := Vec{0, 0, 0.8}
 
-	tri1 := geometry.Tri{v2, v1, v3}
-	tri2 := geometry.Tri{v4, v2, v1}
-	tri3 := geometry.Tri{v2, v3, v4}
-	tri4 := geometry.Tri{v1, v3, v4}
+	tri1 := geometry.NewTri(v2, v1, v3)
+	tri2 := geometry.NewTri(v4, v2, v1)
+	tri3 := geometry.NewTri(v2, v3, v4)
+	tri4 := geometry.NewTri(v1, v3, v4)
 
-	ObArray := []geometry.Geometry{&sp1, &sp2, &sp3, &tri1, &tri2, &tri3, &tri4}
+	ObArray := []geometry.Geometry{sp1, sp2, sp3, tri1, tri2, tri3, tri4}
 
 	/*
 		//Benchmark

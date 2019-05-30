@@ -1,12 +1,12 @@
 package render
 
 import (
-	"image"
-
 	"GoPath/color"
 	. "GoPath/core"
 	"GoPath/geometry"
 	"GoPath/util"
+	"image"
+	"math"
 )
 
 func Render(objectArray []geometry.Geometry, cam_or Vec, WIDTH, HEIGHT int, filename string) {
@@ -59,21 +59,19 @@ func Render(objectArray []geometry.Geometry, cam_or Vec, WIDTH, HEIGHT int, file
 			}
 
 			if intersect == true {
+				//hitColor = hitObject->albedo / M_PI * light->intensity * light->color * std::max(0.f, hitNormal.dotProduct(L));
+
 				HitPoint := ray.O.Add(ray.D.Multiply(tMin))
+				Normal := objectArray[ObjectHitIndex].Normal(ray, HitPoint)
 
-				//Light Attendance
-				LightPos := Vec{-6, 1, 1}
-				LightAttendance := Dot(HitPoint.Normalized(), LightPos.Normalized())
+				LightDir := Vec{0.3, -0.4, -0.6}.Normalized()
+				L := LightDir.Negated()
 
-				//Placeholder Color TODO!
-				//Color Spheres (color multiplied with Light Attendance)
-				//col = color.Gray32(float32(ObjectHitIndex) / 5)
+				c1 := color.Divide(cObj.Material().BaseColor(), color.Gray32(3.14))
+				cMax := float32(math.Max(0.0, Dot(Normal, L)))
+				c2 := color.MultiplyF(color.Color32{0.8, 0.7, 0.6}, 3*cMax)
+				col = color.Multiply(c1, c2)
 
-				//Normal:
-				col = color.FromVec(objectArray[ObjectHitIndex].Normal(ray, HitPoint))
-
-				//Objectcolor * Light Attendance
-				col = color.Multiply(cObj.ObjectColor(), color.Gray32(float32(LightAttendance)))
 				col.Clamp()
 			}
 			//convert float32 colors to 24 bit (0-255) color and save

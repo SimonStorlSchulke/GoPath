@@ -3,11 +3,17 @@ package geometry
 import (
 	"GoPath/color"
 	. "GoPath/core"
+	"GoPath/material"
 	//"math"
 )
 
 type Tri struct {
-	A, B, C Vec
+	A, B, C  Vec
+	material material.Material
+}
+
+func NewTri(A, B, C Vec) *Tri {
+	return &Tri{A, B, C, material.Diffuse{color.Gray32(0.8)}}
 }
 
 func (tri Tri) Normal(ray Ray, HitPoint Vec) Vec {
@@ -18,7 +24,7 @@ func (tri Tri) Normal(ray Ray, HitPoint Vec) Vec {
 	return Cross(ac, ab)
 }
 
-func (tri Tri) ObjectColor() color.Color32 {
+func (tri *Tri) ObjectColor() color.Color32 {
 	return color.Color32{1, 0, 0}
 }
 
@@ -57,4 +63,12 @@ func (tri Tri) Intersect(ray Ray, t *float64) bool {
 	}
 
 	return true
+}
+
+func (T Tri) SetMaterial(mat material.Material) {
+	T.material = mat
+}
+
+func (T Tri) Material() material.Material {
+	return T.material
 }
