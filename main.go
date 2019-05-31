@@ -23,7 +23,7 @@ func main() {
 	sp3 := geometry.NewSphere(Vec{0, -2, -0.9}, 0.5)
 
 	sp2.SetMaterial(material.StandardMaterial{
-		Color:     color.GREEN,
+		Color:     color.Color32{0.3, 0.8, 0.4},
 		Specular:  0.5,
 		Roughness: 0,
 		Rim:       0,

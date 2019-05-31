@@ -17,6 +17,13 @@ func Render(objectArray []geometry.Geometry, cam_or Vec, WIDTH, HEIGHT int, file
 	var intersect bool
 	var t float64
 
+	//HARDCODED LIGHTS
+
+	lights := []Light{
+		NewLightDirectional(Vec{0.7, -0.4, -0.6}, color.Color32{1, 0.9, 0.6}, 3),
+		NewLightDirectional(Vec{-0.3, 0.4, -0.2}, color.Color32{0.8, 0.8, 1}, 6),
+	}
+
 	//Loop through whole Image
 	for x := 0; x < WIDTH; x++ {
 		for y := 0; y < HEIGHT; y++ {
@@ -59,18 +66,10 @@ func Render(objectArray []geometry.Geometry, cam_or Vec, WIDTH, HEIGHT int, file
 			}
 
 			if intersect == true {
-				//hitColor = hitObject->albedo / M_PI * light->intensity * light->color * std::max(0.f, hitNormal.dotProduct(L));
-
 				HitPoint := ray.O.Add(ray.D.Multiply(tMin))
 				Normal := objectArray[ObjectHitIndex].Normal(ray, HitPoint)
 
-				LightDir := Vec{0.3, -0.4, -0.6}.Normalized()
-				L := LightDir.Negated()
-
-				c1 := color.Divide(cObj.Material().BaseColor(), color.Gray32(3.14))
-				cMax := float32(math.Max(0.0, Dot(Normal, L)))
-				c2 := color.MultiplyF(color.Color32{0.8, 0.7, 0.6}, 3*cMax)
-				col = color.Multiply(c1, c2)
+				col = Diffuse(cObj, lights, HitPoint, Normal)
 
 				col.Clamp()
 			}
@@ -79,4 +78,46 @@ func Render(objectArray []geometry.Geometry, cam_or Vec, WIDTH, HEIGHT int, file
 		}
 	}
 	util.SavePNG(filename, img)
+}
+
+//TODO REFACTOR
+func Diffuse(cObj geometry.Geometry, lights []Light, hitPoint, Normal Vec) color.Color32 {
+
+	col := color.Color32{}
+
+	for _, L := range lights {
+		c1 := color.Divide(cObj.Material().BaseColor(), color.Gray32(3.14))
+		cMax := float32(math.Max(0.0, Dot(Normal, L.Dir().Negated())))
+		c2 := color.MultiplyF(L.Color(), L.Intinsity()*cMax)
+		col = color.Add(col, color.Multiply(c1, c2))
+	}
+	return col
+}
+
+type Light interface {
+	Dir() Vec
+	Color() color.Color32
+	Intinsity() float32
+}
+
+type LightDirectional struct {
+	dir       Vec
+	color     color.Color32
+	intensity float32
+}
+
+func NewLightDirectional(dir Vec, color color.Color32, intensity float32) *LightDirectional {
+	return &LightDirectional{dir.Normalized(), color, intensity}
+}
+
+func (L *LightDirectional) Dir() Vec {
+	return L.dir
+}
+
+func (L *LightDirectional) Color() color.Color32 {
+	return L.color
+}
+
+func (L *LightDirectional) Intinsity() float32 {
+	return L.intensity
 }

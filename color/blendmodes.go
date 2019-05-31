@@ -19,7 +19,7 @@ func DivideF(c1 Color32, val float32) Color32 {
 }
 
 func Add(c1, c2 Color32) Color32 {
-	return Color32{c1.R + c2.R, c1.G + c2.G, c1.B + c2.G}
+	return Color32{c1.R + c2.R, c1.G + c2.G, c1.B + c2.B}
 }
 
 func Subtract(c1, c2 Color32) Color32 {
