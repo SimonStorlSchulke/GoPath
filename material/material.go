@@ -1,6 +1,8 @@
 package material
 
-import "GoPath/color"
+import (
+	"GoPath/color"
+)
 
 type Material interface {
 	BaseColor() color.Color32
@@ -12,6 +14,7 @@ type Diffuse struct {
 }
 
 func (D Diffuse) BaseColor() color.Color32 {
+	//TODO
 	return color.Color32{1, 0, 0}
 }
 

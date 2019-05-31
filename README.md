@@ -1,5 +1,5 @@
 **Simple Raytracer in Go**  
-Cant do anything but render spheres with surface Normals at the moment.
+Can render spheres with Diffuse and multiple Lights, more to come.
 
 ![01](testimage.png)
 *testimage*

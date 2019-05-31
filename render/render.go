@@ -5,6 +5,7 @@ import (
 	. "GoPath/core"
 	"GoPath/geometry"
 	"GoPath/util"
+	"fmt"
 	"image"
 	"math"
 )
@@ -16,7 +17,7 @@ func Render(objectArray []geometry.Geometry, cam_or Vec, WIDTH, HEIGHT int, file
 	var ray Ray
 	var intersect bool
 	var t float64
-
+	var progress int
 	//HARDCODED LIGHTS
 
 	lights := []Light{
@@ -25,7 +26,15 @@ func Render(objectArray []geometry.Geometry, cam_or Vec, WIDTH, HEIGHT int, file
 	}
 
 	//Loop through whole Image
+	pMax := 0
 	for x := 0; x < WIDTH; x++ {
+		//print Progress every 5% TODO - change to every 5 seconds
+		progress = int(float32(x) / float32(WIDTH) * 100)
+		if progress > pMax+4 {
+			fmt.Println("Rendering", progress, "%")
+			pMax = progress
+		}
+
 		for y := 0; y < HEIGHT; y++ {
 
 			//Map X and Y from -0.5 to 0.5 and respect Aspect Ratio 1- for correct rotation
@@ -65,11 +74,35 @@ func Render(objectArray []geometry.Geometry, cam_or Vec, WIDTH, HEIGHT int, file
 				}
 			}
 
-			if intersect == true {
+			if intersect {
 				HitPoint := ray.O.Add(ray.D.Multiply(tMin))
 				Normal := objectArray[ObjectHitIndex].Normal(ray, HitPoint)
 
 				col = Diffuse(cObj, lights, HitPoint, Normal)
+
+				//Reflection
+				specRay := Ray{HitPoint, Normal}
+
+				intersectSpec := false
+				for i, currentObject := range objectArray {
+					//Check for intersection in every Object
+					if currentObject.Intersect(specRay, &t) {
+						intersectSpec = true
+						//check if new t is smaller then old tmin and set tmin to new t if it is
+						tminOld := tMin
+
+						if t < tminOld {
+							tMin = t
+							//what Object got hit
+							ObjectHitIndex = i
+							cObj = currentObject
+						}
+						if intersectSpec && cObj != currentObject {
+							difSpec := Diffuse(currentObject, lights, HitPoint, Normal)
+							col = color.Mix(col, difSpec, 0.7)
+						}
+					}
+				}
 
 				col.Clamp()
 			}

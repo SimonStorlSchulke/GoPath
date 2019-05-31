@@ -65,10 +65,10 @@ func (tri Tri) Intersect(ray Ray, t *float64) bool {
 	return true
 }
 
-func (T Tri) SetMaterial(mat material.Material) {
+func (T *Tri) SetMaterial(mat material.Material) {
 	T.material = mat
 }
 
-func (T Tri) Material() material.Material {
+func (T *Tri) Material() material.Material {
 	return T.material
 }

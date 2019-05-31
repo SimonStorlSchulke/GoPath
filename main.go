@@ -19,8 +19,8 @@ func main() {
 	cam_or := Vec{-5, 0, 0}
 	//cam_dir := Vec{-1,0,0}.Normalized() // - TODO
 	sp1 := geometry.NewSphere(Vec{0, -0.5, -0.9}, 0.6)
-	sp2 := geometry.NewSphere(Vec{0, 1.5, -0.9}, 1)
-	sp3 := geometry.NewSphere(Vec{0, -2, -0.9}, 0.5)
+	sp2 := geometry.NewSphere(Vec{-1, 1.5, -0.9}, 1)
+	sp3 := geometry.NewSphere(Vec{-2, -2, -0.9}, 0.5)
 
 	sp2.SetMaterial(material.StandardMaterial{
 		Color:     color.Color32{0.3, 0.8, 0.4},
@@ -39,6 +39,14 @@ func main() {
 	tri2 := geometry.NewTri(v4, v2, v1)
 	tri3 := geometry.NewTri(v2, v3, v4)
 	tri4 := geometry.NewTri(v1, v3, v4)
+
+	mTri := material.StandardMaterial{Color: color.Color32{0.6, 0.2, 0.4}}
+
+	tri1.SetMaterial(mTri)
+	tri2.SetMaterial(mTri)
+	tri3.SetMaterial(mTri)
+	tri4.SetMaterial(mTri)
+	sp3.SetMaterial(mTri)
 
 	ObArray := []geometry.Geometry{sp1, sp2, sp3, tri1, tri2, tri3, tri4}
 
